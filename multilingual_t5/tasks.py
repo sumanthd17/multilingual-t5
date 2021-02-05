@@ -17,6 +17,7 @@ import functools
 
 from multilingual_t5 import preprocessors
 from multilingual_t5 import utils
+from multilingual_t5.indic_corpus import indic_corpus
 
 import t5.data
 from t5.evaluation import metrics
@@ -175,7 +176,7 @@ for lang in INDIC_LANGS:
     t5.data.TaskRegistry.add(
         "indic_corpus.{}".format(lang),
         t5.data.TfdsTask,
-        tfds_name="indic_corpus",
+        tfds_name="indic_corpus:1.0.0",
         splits={"train": lang, "validation": f"{lang}-validation"},
         text_preprocessor=functools.partial(
             t5.data.preprocessors.rekey, key_map={"inputs": None, "targets": "text"}
