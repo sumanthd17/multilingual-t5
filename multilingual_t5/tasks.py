@@ -17,7 +17,7 @@ import functools
 
 from multilingual_t5 import preprocessors
 from multilingual_t5 import utils
-from multilingual_t5.indic_corpus import indic_corpus
+import multilingual_t5.indic_corpus.indic_corpus
 
 import t5.data
 from t5.evaluation import metrics
