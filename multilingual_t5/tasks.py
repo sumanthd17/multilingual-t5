@@ -185,7 +185,7 @@ for lang in INDIC_LANGS:
         metric_fns=[],
     )
 
-indic_corpus = ["indic_corpus.{}".format(lang) for lang in MC4_LANGS]
+indic_corpus = ["indic_corpus.{}".format(lang) for lang in INDIC_LANGS]
 t5.data.MixtureRegistry.add("indic_corpus", indic_corpus, default_rate=DEFAULT_MIX_RATE)
 
 # Wikipedia
