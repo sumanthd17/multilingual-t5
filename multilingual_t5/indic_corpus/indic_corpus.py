@@ -85,8 +85,7 @@ class IndicCorpus(tfds.core.GeneratorBasedBuilder):
         """Yields examples."""
         client = storage.Client()
         bucket = client.get_bucket('pre-train')
-        path = f't5-tfds/downloads/extracted/ZIP.ai4b-publ-indi-nlp-corp_indi_all_lang_monoACZKQgNF83mDxE_okLuFZRPPtb-SQxlLxv_f
-_U1NZUg.zip/monoling/{split}.txt'
+        path = f't5-tfds/downloads/extracted/ZIP.ai4b-publ-indi-nlp-corp_indi_all_lang_monoACZKQgNF83mDxE_okLuFZRPPtb-SQxlLxv_f_U1NZUg.zip/monoling/{split}.txt'
         blob = bucket.get_blob(path)
 
         lines = blob.download_as_string()
