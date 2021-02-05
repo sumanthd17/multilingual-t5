@@ -71,21 +71,22 @@ class IndicCorpus(tfds.core.GeneratorBasedBuilder):
             splits.extend(
                 [
                     tfds.core.SplitGenerator(
-                        name=lang, gen_kwargs=dict(path=path / f"monoling/{lang}.txt")
+                        name=lang, gen_kwargs=dict(path=path / f"monoling/{lang}.txt", split=lang)
                     ),
                     tfds.core.SplitGenerator(
                         name=f"{lang}-validation",
-                        gen_kwargs=dict(path=path / f"monoling/{lang}-validation.txt"),
+                        gen_kwargs=dict(path=path / f"monoling/{lang}-validation.txt", split=f'{lang}-validation'),
                     ),
                 ]
             )
         return splits
 
-    def _generate_examples(self, path):
+    def _generate_examples(self, path, split):
         """Yields examples."""
         client = storage.Client()
         bucket = client.get_bucket('pre-train')
-        path = path.split('//')[0][10:]
+        path = f't5-tfds/downloads/extracted/ZIP.ai4b-publ-indi-nlp-corp_indi_all_lang_monoACZKQgNF83mDxE_okLuFZRPPtb-SQxlLxv_f
+_U1NZUg.zip/monoling/{split}.txt'
         blob = bucket.get_blob(path)
 
         lines = blob.download_as_string()
