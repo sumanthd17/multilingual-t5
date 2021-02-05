@@ -1,5 +1,6 @@
 """indic_corpus dataset."""
 import tensorflow_datasets as tfds
+from google.cloud import storage
 
 _DESCRIPTION = """
 Description is **formatted** as markdown.
@@ -82,18 +83,15 @@ class IndicCorpus(tfds.core.GeneratorBasedBuilder):
 
     def _generate_examples(self, path):
         """Yields examples."""
-        with open(path, "r") as f:
-            lines = f.read()
-            lines = lines.split("\n")[:-1]
-            for id_, line in enumerate(lines):
-                yield id_, {"text": line}
-        # beam = tfds.core.lazy_imports.apache_beam
+        client = storage.Client()
+        bucket = client.get_bucket('pre-train')
+        path = path.split('//')[0][10:]
+        blob = bucket.get_blob(path)
 
-        # def _process_file(path):
-        #   with open(path, 'r') as f:
-        #     lines = f.read()
-        #     lines = lines.split('\n')[:-1]
-        #     for id_, line in enumerate(lines):
-        #       yield id_, {'text': line}
+        lines = blob.download_as_string()
+        lines = lines.decode('utf-8')
+        lines = lines.split('\n')[:-1]
 
-        # return (beam.Create([path]) | beam.Map(_process_file))
+        for id_, line in enumerate(lines):
+          yield id_, {'text': line}
+
