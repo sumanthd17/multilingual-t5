@@ -23,8 +23,8 @@ import t5.data
 from t5.evaluation import metrics
 import tensorflow_datasets as tfds
 
-DEFAULT_SPM_PATH = "gs://t5-data/vocabs/mc4.250000.100extra/sentencepiece.model"
-
+# DEFAULT_SPM_PATH = "gs://t5-data/vocabs/mc4.250000.100extra/sentencepiece.model"
+DEFAULT_SPM_PATH = "gs://pre-train/tokenizer/spiece.model"
 
 DEFAULT_TEMPERATURE = 1.0 / 0.3
 DEFAULT_MIX_RATE = functools.partial(
