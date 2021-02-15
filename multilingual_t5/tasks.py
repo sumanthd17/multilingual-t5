@@ -588,7 +588,7 @@ t5.data.TaskRegistry.add(
         t5.data.preprocessors.translate,
         source_language='hi',
         target_language='en'
-    )
+    ),
     metric_fns=[metrics.bleu],
     output_features=DEFAULT_OUTPUT_FEATURES
 )
