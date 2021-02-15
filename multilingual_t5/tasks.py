@@ -587,8 +587,8 @@ t5.data.TaskRegistry.add(
     splits=['train', 'val'],
     text_preprocessor=functools.partial(
         t5.data.preprocessors.translate,
-        source_language='src',
-        target_language='tgt'
+        source_language='source',
+        target_language='target'
     ),
     metric_fns=[metrics.bleu],
     output_features=DEFAULT_OUTPUT_FEATURES
