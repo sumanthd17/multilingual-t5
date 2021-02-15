@@ -584,7 +584,7 @@ t5.data.TaskRegistry.add(
     t5.data.TfdsTask,
     tfds_name="hi_en:1.0.0",
     splits=['train', 'val'],
-    text_processor=functools.partial(
+    text_preprocessor=functools.partial(
         t5.data.preprocessors.translate,
         source_language='hi',
         target_language='en'
