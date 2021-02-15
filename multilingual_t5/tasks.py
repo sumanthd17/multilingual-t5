@@ -577,3 +577,18 @@ mlqa_translate_train = (
 t5.data.MixtureRegistry.add(
     "mlqa_translate_train", mlqa_translate_train, default_rate=1.0
 )
+
+# ----- NMT -----
+t5.data.TaskRegistry.add(
+    'hi_en',
+    t5.data.TfdsTask,
+    tfds_name="hi_en:1.0.0",
+    splits=['train', 'val'],
+    text_processor=functools.partial(
+        t5.data.preprocessors.translate,
+        source_language='hi',
+        target_language='en'
+    )
+    metric_fns=[metrics.bleu],
+    output_features=DEFAULT_OUTPUT_FEATURES
+)
