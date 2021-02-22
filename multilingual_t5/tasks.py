@@ -229,11 +229,6 @@ t5.data.TaskRegistry.add(
     output_features=DEFAULT_OUTPUT_FEATURES
 )
 
-t5.data.MixtureRegistry.add(
-    'nmt_hi_en', ['hi_en'], default_rate=1.0
-)
-
-
 # ----- XNLI -----
 # XNLI zero-shot task. This fine-tunes on English MNLI training data and then
 # evaluates on multilingual XNLI dev/test data.
