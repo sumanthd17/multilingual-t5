@@ -213,6 +213,27 @@ t5.data.MixtureRegistry.add("wiki", wiki, default_rate=DEFAULT_MIX_RATE)
 t5.data.MixtureRegistry.add("mc4_wiki", mc4 + wiki, default_rate=DEFAULT_MIX_RATE)
 
 # =========================== Fine-tuning Tasks/Mixtures =======================
+
+# ----- NMT -----
+t5.data.TaskRegistry.add(
+    'hi_en',
+    t5.data.TfdsTask,
+    tfds_name="hi_en:1.0.0",
+    splits=['train', 'val'],
+    text_preprocessor=functools.partial(
+        t5.data.preprocessors.translate,
+        source_language='source',
+        target_language='target'
+    ),
+    metric_fns=[metrics.bleu],
+    output_features=DEFAULT_OUTPUT_FEATURES
+)
+
+t5.data.MixtureRegistry.add(
+    'nmt_hi_en', ['hi_en'], default_rate=1.0
+)
+
+
 # ----- XNLI -----
 # XNLI zero-shot task. This fine-tunes on English MNLI training data and then
 # evaluates on multilingual XNLI dev/test data.
@@ -577,19 +598,4 @@ mlqa_translate_train = (
 
 t5.data.MixtureRegistry.add(
     "mlqa_translate_train", mlqa_translate_train, default_rate=1.0
-)
-
-# ----- NMT -----
-t5.data.TaskRegistry.add(
-    'hi_en',
-    t5.data.TfdsTask,
-    tfds_name="hi_en:1.0.0",
-    splits=['train', 'val'],
-    text_preprocessor=functools.partial(
-        t5.data.preprocessors.translate,
-        source_language='source',
-        target_language='target'
-    ),
-    metric_fns=[metrics.bleu],
-    output_features=DEFAULT_OUTPUT_FEATURES
 )
