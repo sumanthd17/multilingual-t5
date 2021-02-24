@@ -166,7 +166,8 @@ def process_mnli(dataset):
 def process_nmt(dataset, source_language, target_language):
   def _process(x):
     return {
-      'inputs': tf.strings.join([f'translate {source_language} to {target_language}: ', x['source']]),
+      # 'inputs': tf.strings.join([f'translate {source_language} to {target_language}: ', x['source']]),
+      'inputs': tf.strings.as_string(x['source'])
       'targets': tf.strings.as_string(x['target'])
     }
   return dataset.map(_process, num_parallel_calls=tf.data.experimental.AUTOTUNE)

@@ -225,8 +225,8 @@ t5.data.TaskRegistry.add(
         source_language='hindi',
         target_language='english'
     ),
-    metric_fns=[metrics.bleu],
-    output_features=DEFAULT_OUTPUT_FEATURES
+    output_features=DEFAULT_OUTPUT_FEATURES,
+    metric_fns=[metrics.bleu]
 )
 
 t5.data.MixtureRegistry.add('hi_en', ['hi_en'], default_rate=1.0)
