@@ -94,9 +94,6 @@ def _xnli_map_hypothesis_premise(dataset, target_language):
       lambda x: tf.math.equal(x['language'], target_language))
   return dataset
 
-
-def 
-
 def xquad(dataset, include_context=True):
   """Convert SQuAD-like examples to a text2text pair.
 
