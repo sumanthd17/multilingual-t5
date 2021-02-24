@@ -214,17 +214,26 @@ t5.data.MixtureRegistry.add("mc4_wiki", mc4 + wiki, default_rate=DEFAULT_MIX_RAT
 
 # =========================== Fine-tuning Tasks/Mixtures =======================
 
+def preprocess(x, source_language, target_language):
+    def _process(x):
+        return {
+            'inputs': tf.strings.join([f'translate {source_language} to {target_language}: ', x['source']]),
+            'targets': tf.strings.as_string(x['target'])
+        }
+
+    return dataset.map(_process, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
 # ----- NMT -----
 t5.data.TaskRegistry.add(
     'hi_en',
     t5.data.TfdsTask,
     tfds_name="hi_en:1.0.0",
     splits=['train', 'validation'],
-    # text_preprocessor=functools.partial(
-    #     t5.data.preprocessors.translate,
-    #     source_language='source',
-    #     target_language='target'
-    # ),
+    text_preprocessor=functools.partial(
+        preprocess,
+        source_language='hindi',
+        target_language='english'
+    ),
     metric_fns=[metrics.bleu],
     output_features=DEFAULT_OUTPUT_FEATURES
 )
