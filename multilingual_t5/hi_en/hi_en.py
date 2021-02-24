@@ -41,19 +41,19 @@ class HiEn(tfds.core.GeneratorBasedBuilder):
   def _split_generators(self, dl_manager: tfds.download.DownloadManager):
     """Returns SplitGenerators."""
     # TODO(hi_en): Downloads the data and defines the splits
-    train = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/hi_en/data/hi_en_test.csv')
-    val = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/hi_en/data/hi_en_test.csv')
+    train = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/test-runs/train.tsv')
+    val = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/test-runs/validation.tsv')
 
     # TODO(hi_en): Returns the Dict[split names, Iterator[Key, Example]]
     return {
         'train': self._generate_examples(train),
-        'val': self._generate_examples(val)
+        'validation': self._generate_examples(val)
     }
 
   def _generate_examples(self, path):
     """Yields examples."""
     # TODO(hi_en): Yields (key, example) tuples from the dataset
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, sep='\t', names=['src', 'tgt'])
     for idx, row in df.iterrows():
       yield idx, {
         'source': row['src'],

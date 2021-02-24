@@ -219,7 +219,7 @@ t5.data.TaskRegistry.add(
     'hi_en',
     t5.data.TfdsTask,
     tfds_name="hi_en:1.0.0",
-    splits=['train', 'val'],
+    splits=['train', 'validation'],
     text_preprocessor=functools.partial(
         t5.data.preprocessors.translate,
         source_language='source',
@@ -228,6 +228,8 @@ t5.data.TaskRegistry.add(
     metric_fns=[metrics.bleu],
     output_features=DEFAULT_OUTPUT_FEATURES
 )
+
+t5.data.MixtureRegistry.add('hi_en', ['hi_en'], default_rate=1.0)
 
 # ----- XNLI -----
 # XNLI zero-shot task. This fine-tunes on English MNLI training data and then
