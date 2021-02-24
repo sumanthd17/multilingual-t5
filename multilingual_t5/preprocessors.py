@@ -95,6 +95,8 @@ def _xnli_map_hypothesis_premise(dataset, target_language):
   return dataset
 
 
+def 
+
 def xquad(dataset, include_context=True):
   """Convert SQuAD-like examples to a text2text pair.
 
@@ -164,6 +166,13 @@ def process_mnli(dataset):
 
   return dataset.map(_process, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
+def process_nmt(dataset, source_language, target_language):
+  def _process(x):
+    return {
+      'inputs': tf.strings.join([f'translate {source_language} to {target_language}: ', x['source']]),
+      'targets': tf.strings.as_string(x['target'])
+    }
+  return dataset.map(_process, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
 def process_xnli(dataset, target_languages):
   """Processes the XNLI dataset into examples by language in a text2text format.
