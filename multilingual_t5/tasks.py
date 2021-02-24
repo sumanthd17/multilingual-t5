@@ -214,7 +214,7 @@ t5.data.MixtureRegistry.add("mc4_wiki", mc4 + wiki, default_rate=DEFAULT_MIX_RAT
 
 # =========================== Fine-tuning Tasks/Mixtures =======================
 
-def preprocess(x, source_language, target_language):
+def preprocess(dataset, source_language, target_language):
     def _process(x):
         return {
             'inputs': tf.strings.join([f'translate {source_language} to {target_language}: ', x['source']]),
