@@ -41,21 +41,21 @@ class HiEn(tfds.core.GeneratorBasedBuilder):
   def _split_generators(self, dl_manager: tfds.download.DownloadManager):
     """Returns SplitGenerators."""
     # TODO(hi_en): Downloads the data and defines the splits
-    train = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/test-runs/train.tsv')
-    val = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/test-runs/validation.tsv')
+    train = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/test-runs/train.zip')
+    val = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/test-runs/validation.zip')
 
     # TODO(hi_en): Returns the Dict[split names, Iterator[Key, Example]]
     return {
-        'train': self._generate_examples(train),
-        'validation': self._generate_examples(val)
+        'train': self._generate_examples(source=train/'train.hi', target=train/'train.en'),
+        'validation': self._generate_examples(source=train/'validation.hi', target=train/'validation.en')
     }
 
-  def _generate_examples(self, path):
+  def _generate_examples(self, source, target):
     """Yields examples."""
     # TODO(hi_en): Yields (key, example) tuples from the dataset
-    df = pd.read_csv(path, sep='\t', names=['src', 'tgt'])
-    for idx, row in df.iterrows():
-      yield idx, {
-        'source': row['src'],
-        'target': row['tgt']
-      }
+    with open(source) as src, open(target) as tgt: 
+      for idx, row in zip(textfile1, textfile2):
+          yield idx, {
+            'source': row[0],
+            'target': row[1]
+          }
