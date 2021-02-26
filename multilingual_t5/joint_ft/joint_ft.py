@@ -1,6 +1,7 @@
 """joint_ft dataset."""
 
 import tensorflow_datasets as tfds
+from google.cloud import storage
 
 # TODO(joint_ft): Markdown description  that will appear on the catalog page.
 _DESCRIPTION = """
