@@ -57,13 +57,14 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
     # TODO(hi_en): Yields (key, example) tuples from the dataset
     client = storage.Client()
     bucket = client.get_bucket('ai4b-anuvaad-nmt')
-    blob = bucket.get_blob(path)
-
-    src = blob.download_as_string()
+    
+    src_blob = bucket.get_blob(source)
+    src = src_blob.download_as_string()
     src = src.decode('utf-8')
     src = src.split('\n')[:-1]
 
-    tgt = blob.download_as_string()
+    tgt_blob = bucket.get_blob(source)
+    tgt = tgt_blob.download_as_string()
     tgt = tgt.decode('utf-8')
     tgt = tgt.split('\n')[:-1]
 
