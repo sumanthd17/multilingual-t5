@@ -26,7 +26,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
   def _info(self) -> tfds.core.DatasetInfo:
     """Returns the dataset metadata."""
-    # TODO(hi_en): Specifies the tfds.core.DatasetInfo object
+    # TODO(joint_ft): Specifies the tfds.core.DatasetInfo object
     return tfds.core.DatasetInfo(
         builder=self,
         description=_DESCRIPTION,
@@ -40,12 +40,12 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
   def _split_generators(self, dl_manager: tfds.download.DownloadManager):
     """Returns SplitGenerators."""
-    # TODO(hi_en): Downloads the data and defines the splits
+    # TODO(joint_ft): Downloads the data and defines the splits
     train = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/joint-ft/data/j-train.zip')
     val = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/joint-ft/data/j-dev.zip')
     test = dl_manager.download_and_extract('https://storage.googleapis.com/ai4b-anuvaad-nmt/joint-ft/data/j-test.zip')
 
-    # TODO(hi_en): Returns the Dict[split names, Iterator[Key, Example]]
+    # TODO(joint_ft): Returns the Dict[split names, Iterator[Key, Example]]
     return {
         'train': self._generate_examples(source=train/'j-train/joint-train.txt', target=train/'j-train/en-train.txt'),
         'validation': self._generate_examples(source=val/'j-dev/joint-dev.txt', target=val/'j-dev/en-dev.txt'),
@@ -54,7 +54,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
   def _generate_examples(self, source, target):
     """Yields examples."""
-    # TODO(hi_en): Yields (key, example) tuples from the dataset
+    # TODO(joint_ft): Yields (key, example) tuples from the dataset
     src = tf.io.gfile.GFile(source, mode='r').readlines()
     tgt = tf.io.gfile.GFile(target, mode='r').readlines()
     for idx, row in enumerate(zip(src, tgt)):
