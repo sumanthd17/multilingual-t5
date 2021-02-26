@@ -47,9 +47,9 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
     # TODO(hi_en): Returns the Dict[split names, Iterator[Key, Example]]
     return {
-        'train': self._generate_examples(source=train/'joint-train.txt', target=train/'en-train.txt'),
-        'validation': self._generate_examples(source=val/'joint-dev.txt', target=val/'en-dev.txt'),
-        'test': self._generate_examples(source=test/'joint-test.txt', target=test/'en-test.txt')
+        'train': self._generate_examples(source=train/'j-train/joint-train.txt', target=train/'j-train/en-train.txt'),
+        'validation': self._generate_examples(source=val/'j-dev/joint-dev.txt', target=val/'j-dev/en-dev.txt'),
+        'test': self._generate_examples(source=test/'j-test/joint-test.txt', target=test/'j-test/en-test.txt')
     }
 
   def _generate_examples(self, source, target):
@@ -57,7 +57,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
     # TODO(hi_en): Yields (key, example) tuples from the dataset
     src = tf.io.gfile.GFile(source, mode='r').readlines()
     tgt = tf.io.gfile.GFile(target, mode='r').readlines()
-    for idx, row in zip(src, tgt):
+    for idx, row in enumerate(zip(src, tgt)):
       yield idx, {
         'source': row[0],
         'target': row[1]
