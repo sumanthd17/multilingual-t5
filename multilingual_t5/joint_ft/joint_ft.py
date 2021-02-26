@@ -51,7 +51,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
         'test': self._generate_examples(source=train/'joint-test.txt', target=train/'en-test.txt')
     }
 
-  def _generate_examples(self, path):
+  def _generate_examples(self, source, target):
     """Yields examples."""
     # TODO(hi_en): Yields (key, example) tuples from the dataset
     with open(source) as src, open(target) as tgt: 
