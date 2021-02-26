@@ -19,6 +19,7 @@ from multilingual_t5 import preprocessors
 from multilingual_t5 import utils
 import multilingual_t5.indic_corpus.indic_corpus
 import multilingual_t5.hi_en.hi_en
+import multilingual_t5.joint_ft.joint_ft
 
 import t5.data
 from t5.evaluation import metrics
@@ -220,16 +221,25 @@ t5.data.TaskRegistry.add(
     t5.data.TfdsTask,
     tfds_name="hi_en:1.0.0",
     splits=['train', 'validation'],
-    text_preprocessor=functools.partial(
-        preprocessors.process_nmt,
-        source_language='hindi',
-        target_language='english'
-    ),
+    text_preprocessor=preprocessors.process_nmt,
     output_features=DEFAULT_OUTPUT_FEATURES,
     metric_fns=[metrics.bleu]
 )
 
 t5.data.MixtureRegistry.add('hi_en', ['hi_en'], default_rate=1.0)
+
+# ----- joint fine-tuning -----
+t5.data.TaskRegistry.add(
+    'joint_ft',
+    t5.data.TfdsTask,
+    tfds_name="joint_ft:1.0.0",
+    splits=['train', 'validation'],
+    text_preprocessor=preprocessors.process_nmt,
+    output_features=DEFAULT_OUTPUT_FEATURES,
+    metric_fns=[metrics.bleu]
+)
+
+t5.data.MixtureRegistry.add('joint_ft', ['joint_ft'], default_rate=1.0)
 
 # ----- XNLI -----
 # XNLI zero-shot task. This fine-tunes on English MNLI training data and then
