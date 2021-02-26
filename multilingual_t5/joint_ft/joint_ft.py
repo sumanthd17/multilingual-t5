@@ -55,8 +55,8 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
   def _generate_examples(self, source, target):
     """Yields examples."""
     # TODO(hi_en): Yields (key, example) tuples from the dataset
-    src = tf.io.gfile.GFile.readlines(source)
-    tgt = tf.io.gfile.GFile.readlines(target)
+    src = tf.io.gfile.GFile(source, mode='r').readlines()
+    tgt = tf.io.gfile.GFile(target, mode='r').readlines()
     for idx, row in zip(src, tgt):
         yield idx, {
           'source': row[0],
