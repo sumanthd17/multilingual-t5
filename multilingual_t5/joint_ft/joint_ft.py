@@ -58,7 +58,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
     src = tf.io.gfile.GFile(source, mode='r').readlines()
     tgt = tf.io.gfile.GFile(target, mode='r').readlines()
     for idx, row in zip(src, tgt):
-        yield idx, {
-          'source': row[0],
-          'target': row[1]
-        }
+      yield idx, {
+        'source': row[0],
+        'target': row[1]
+      }
