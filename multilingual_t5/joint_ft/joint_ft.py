@@ -47,7 +47,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
     # TODO(hi_en): Returns the Dict[split names, Iterator[Key, Example]]
     return {
         'train': self._generate_examples(source=train/'joint-train.txt', target=train/'en-train.txt'),
-        'validation': self._generate_examples(source=train/'joint-dev.txt', target=train/'en-dev.txt')
+        'validation': self._generate_examples(source=train/'joint-dev.txt', target=train/'en-dev.txt'),
         'test': self._generate_examples(source=train/'joint-test.txt', target=train/'en-test.txt')
     }
 
