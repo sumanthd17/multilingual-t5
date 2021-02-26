@@ -54,9 +54,20 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
   def _generate_examples(self, source, target):
     """Yields examples."""
     # TODO(hi_en): Yields (key, example) tuples from the dataset
-    with open(source) as src, open(target) as tgt: 
-      for idx, row in zip(textfile1, textfile2):
-          yield idx, {
-            'source': row[0],
-            'target': row[1]
-          }
+    client = storage.Client()
+    bucket = client.get_bucket('ai4b-anuvaad-nmt')
+    blob = bucket.get_blob(path)
+
+    src = blob.download_as_string()
+    src = src.decode('utf-8')
+    src = src.split('\n')[:-1]
+
+    tgt = blob.download_as_string()
+    tgt = tgt.decode('utf-8')
+    tgt = tgt.split('\n')[:-1]
+
+    for idx, row in zip(src, tgt):
+        yield idx, {
+          'source': row[0],
+          'target': row[1]
+        }
