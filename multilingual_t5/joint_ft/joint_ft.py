@@ -1,7 +1,7 @@
 """joint_ft dataset."""
 
 import tensorflow_datasets as tfds
-from google.cloud import storage
+import tensorflow as tf
 
 # TODO(joint_ft): Markdown description  that will appear on the catalog page.
 _DESCRIPTION = """
@@ -55,27 +55,8 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
   def _generate_examples(self, source, target):
     """Yields examples."""
     # TODO(hi_en): Yields (key, example) tuples from the dataset
-    client = storage.Client()
-    bucket = client.get_bucket('ai4b-anuvaad-nmt')
-
-    source = str(source)
-    source = '/'.join(source.split('//')[1].split('/')[1:])
-    print(source)
-
-    target = str(target)
-    target = '/'.join(target.split('//')[1].split('/')[1:])
-    print(target)
-
-    src_blob = bucket.get_blob(source)
-    src = src_blob.download_as_string()
-    src = src.decode('utf-8')
-    src = src.split('\n')[:-1]
-
-    tgt_blob = bucket.get_blob(source)
-    tgt = tgt_blob.download_as_string()
-    tgt = tgt.decode('utf-8')
-    tgt = tgt.split('\n')[:-1]
-
+    src = tf.io.gfile.GFile.readlines(source)
+    tgt = tf.io.gfile.GFile.readlines(target)
     for idx, row in zip(src, tgt):
         yield idx, {
           'source': row[0],
