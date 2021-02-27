@@ -78,7 +78,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
     tgt.extend(hi_tgt)
     tgt.extend(ta_tgt)
 
-    temp = list(zip(a,b))
+    temp = list(zip(src, tgt))
     random.shuffle(temp)
 
     src, tgt = zip(*temp)
