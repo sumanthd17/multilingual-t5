@@ -50,7 +50,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
     # TODO(joint_ft): Returns the Dict[split names, Iterator[Key, Example]]
     return {
-        'train': self._generate_examples(bn_src=bn/'en-bn/train.bn', bn_tgt=bn/'en-bn/train.en', hi_src=hi/'en-hi/train.hi', hi_tgt=hi/'en-hi/train.en', ta_src=ta/'en-ta/train.ta', ta_tgt=ta/'en-ta/train.en'),
+        # 'train': self._generate_examples(bn_src=bn/'en-bn/train.bn', bn_tgt=bn/'en-bn/train.en', hi_src=hi/'en-hi/train.hi', hi_tgt=hi/'en-hi/train.en', ta_src=ta/'en-ta/train.ta', ta_tgt=ta/'en-ta/train.en'),
         'validation': self._generate_examples(bn_src=devtest/'devtest/all/en-bn/dev.bn', bn_tgt=devtest/'devtest/all/en-bn/dev.en', hi_src=devtest/'devtest/all/en-hi/dev.hi', hi_tgt=devtest/'devtest/all/en-hi/dev.en', ta_src=devtest/'devtest/all/en-ta/dev.ta', ta_tgt=devtest/'devtest/all/en-ta/dev.en'),
         'test': self._generate_examples(bn_src=devtest/'devtest/all/en-bn/test.bn', bn_tgt=devtest/'devtest/all/en-bn/test.en', hi_src=devtest/'devtest/all/en-hi/test.hi', hi_tgt=devtest/'devtest/all/en-hi/test.en', ta_src=devtest/'devtest/all/en-ta/test.ta', ta_tgt=devtest/'devtest/all/en-ta/test.en'),
     }
@@ -61,37 +61,37 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
     beam = tfds.core.lazy_imports.apache_beam
 
-    bn_src = tf.io.gfile.GFile(bn_src, mode='r').readlines()
-    bn_tgt = tf.io.gfile.GFile(bn_tgt, mode='r').readlines()
+    def _process_file(paths):
+      bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt = paths[0], paths[1], paths[2], paths[3], paths[4], paths[5], paths[6], paths[7]
+      bn_src = tf.io.gfile.GFile(bn_src, mode='r').readlines()
+      bn_tgt = tf.io.gfile.GFile(bn_tgt, mode='r').readlines()
 
-    hi_src = tf.io.gfile.GFile(hi_src, mode='r').readlines()
-    hi_tgt = tf.io.gfile.GFile(hi_tgt, mode='r').readlines()
+      hi_src = tf.io.gfile.GFile(hi_src, mode='r').readlines()
+      hi_tgt = tf.io.gfile.GFile(hi_tgt, mode='r').readlines()
 
-    ta_src = tf.io.gfile.GFile(ta_src, mode='r').readlines()
-    ta_tgt = tf.io.gfile.GFile(ta_tgt, mode='r').readlines()
+      ta_src = tf.io.gfile.GFile(ta_src, mode='r').readlines()
+      ta_tgt = tf.io.gfile.GFile(ta_tgt, mode='r').readlines()
 
-    src = []
-    tgt = []
+      src = []
+      tgt = []
 
-    src.extend(bn_src)
-    src.extend(hi_src)
-    src.extend(ta_src)
+      src.extend(bn_src)
+      src.extend(hi_src)
+      src.extend(ta_src)
 
-    tgt.extend(bn_tgt)
-    tgt.extend(hi_tgt)
-    tgt.extend(ta_tgt)
+      tgt.extend(bn_tgt)
+      tgt.extend(hi_tgt)
+      tgt.extend(ta_tgt)
 
-    temp = list(zip(src, tgt))
-    random.shuffle(temp)
+      temp = list(zip(src, tgt))
+      random.shuffle(temp)
 
-    src, tgt = zip(*temp)
+      src, tgt = zip(*temp)
 
-    def _process_file(contents):
-      src, tgt = contents[0], contents[1]
       for idx, row in enumerate(zip(src, tgt)):
         return idx, {
           'source': row[0],
           'target': row[1]
         }
 
-    return (beam.Create([src, tgt]) | beam.Map(_process_file))
+    return (beam.Create([bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt]) | beam.Map(_process_file))
