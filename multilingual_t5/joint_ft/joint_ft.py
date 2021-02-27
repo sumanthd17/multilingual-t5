@@ -61,32 +61,38 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
     beam = tfds.core.lazy_imports.apache_beam
 
-    def _process_file(paths):
-      bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt = paths[0], paths[1], paths[2], paths[3], paths[4], paths[5], paths[6], paths[7]
-      bn_src = tf.io.gfile.GFile(bn_src, mode='r').readlines()
-      bn_tgt = tf.io.gfile.GFile(bn_tgt, mode='r').readlines()
+    bn_src = tf.io.gfile.GFile(bn_src, mode='r').readlines()
+    bn_tgt = tf.io.gfile.GFile(bn_tgt, mode='r').readlines()
 
-      hi_src = tf.io.gfile.GFile(hi_src, mode='r').readlines()
-      hi_tgt = tf.io.gfile.GFile(hi_tgt, mode='r').readlines()
+    hi_src = tf.io.gfile.GFile(hi_src, mode='r').readlines()
+    hi_tgt = tf.io.gfile.GFile(hi_tgt, mode='r').readlines()
 
-      ta_src = tf.io.gfile.GFile(ta_src, mode='r').readlines()
-      ta_tgt = tf.io.gfile.GFile(ta_tgt, mode='r').readlines()
+    ta_src = tf.io.gfile.GFile(ta_src, mode='r').readlines()
+    ta_tgt = tf.io.gfile.GFile(ta_tgt, mode='r').readlines()
 
-      src = []
-      tgt = []
+    src = []
+    tgt = []
 
-      src.extend(bn_src)
-      src.extend(hi_src)
-      src.extend(ta_src)
+    src.extend(bn_src)
+    src.extend(hi_src)
+    src.extend(ta_src)
 
-      tgt.extend(bn_tgt)
-      tgt.extend(hi_tgt)
-      tgt.extend(ta_tgt)
+    tgt.extend(bn_tgt)
+    tgt.extend(hi_tgt)
+    tgt.extend(ta_tgt)
 
-      temp = list(zip(src, tgt))
-      random.shuffle(temp)
+    temp = list(zip(src, tgt))
+    random.shuffle(temp)
 
-      src, tgt = zip(*temp)
+    src, tgt = zip(*temp)
+
+    d = {}
+    d['src'] = src
+    d['tgt'] = tgt
+
+    def _process_file(d):
+      src = d['src']
+      tgt = d['tgt']
 
       for idx, row in enumerate(zip(src, tgt)):
         return idx, {
@@ -94,4 +100,4 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
           'target': row[1]
         }
 
-    return (beam.Create([bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt]) | beam.Map(_process_file))
+    return (beam.Create([d]) | beam.Map(_process_file))
