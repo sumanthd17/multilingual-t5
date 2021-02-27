@@ -50,7 +50,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
 
     # TODO(joint_ft): Returns the Dict[split names, Iterator[Key, Example]]
     return {
-        # 'train': self._generate_examples(bn_src=bn/'en-bn/train.bn', bn_tgt=bn/'en-bn/train.en', hi_src=hi/'en-hi/train.hi', hi_tgt=hi/'en-hi/train.en', ta_src=ta/'en-ta/train.ta', ta_tgt=ta/'en-ta/train.en'),
+        'train': self._generate_examples(bn_src=bn/'en-bn/train.bn', bn_tgt=bn/'en-bn/train.en', hi_src=hi/'en-hi/train.hi', hi_tgt=hi/'en-hi/train.en', ta_src=ta/'en-ta/train.ta', ta_tgt=ta/'en-ta/train.en'),
         'validation': self._generate_examples(bn_src=devtest/'devtest/all/en-bn/dev.bn', bn_tgt=devtest/'devtest/all/en-bn/dev.en', hi_src=devtest/'devtest/all/en-hi/dev.hi', hi_tgt=devtest/'devtest/all/en-hi/dev.en', ta_src=devtest/'devtest/all/en-ta/dev.ta', ta_tgt=devtest/'devtest/all/en-ta/dev.en'),
         'test': self._generate_examples(bn_src=devtest/'devtest/all/en-bn/test.bn', bn_tgt=devtest/'devtest/all/en-bn/test.en', hi_src=devtest/'devtest/all/en-hi/test.hi', hi_tgt=devtest/'devtest/all/en-hi/test.en', ta_src=devtest/'devtest/all/en-ta/test.ta', ta_tgt=devtest/'devtest/all/en-ta/test.en'),
     }
