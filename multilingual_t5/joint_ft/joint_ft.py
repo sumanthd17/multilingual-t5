@@ -58,33 +58,39 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
   def _generate_examples(self, bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt):
     """Yields examples."""
     # TODO(joint_ft): Yields (key, example) tuples from the dataset
-    bn_src = tf.io.gfile.GFile(bn_src, mode='r').readlines()
-    bn_tgt = tf.io.gfile.GFile(bn_tgt, mode='r').readlines()
 
-    hi_src = tf.io.gfile.GFile(hi_src, mode='r').readlines()
-    hi_tgt = tf.io.gfile.GFile(hi_tgt, mode='r').readlines()
+    beam = tfds.core.lazy_imports.apache_beam
 
-    ta_src = tf.io.gfile.GFile(ta_src, mode='r').readlines()
-    ta_tgt = tf.io.gfile.GFile(ta_tgt, mode='r').readlines()
+    def _process_file(bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt):
+      bn_src = tf.io.gfile.GFile(bn_src, mode='r').readlines()
+      bn_tgt = tf.io.gfile.GFile(bn_tgt, mode='r').readlines()
 
-    src = []
-    tgt = []
+      hi_src = tf.io.gfile.GFile(hi_src, mode='r').readlines()
+      hi_tgt = tf.io.gfile.GFile(hi_tgt, mode='r').readlines()
 
-    src.extend(bn_src)
-    src.extend(hi_src)
-    src.extend(ta_src)
+      ta_src = tf.io.gfile.GFile(ta_src, mode='r').readlines()
+      ta_tgt = tf.io.gfile.GFile(ta_tgt, mode='r').readlines()
 
-    tgt.extend(bn_tgt)
-    tgt.extend(hi_tgt)
-    tgt.extend(ta_tgt)
+      src = []
+      tgt = []
 
-    temp = list(zip(src, tgt))
-    random.shuffle(temp)
+      src.extend(bn_src)
+      src.extend(hi_src)
+      src.extend(ta_src)
 
-    src, tgt = zip(*temp)
+      tgt.extend(bn_tgt)
+      tgt.extend(hi_tgt)
+      tgt.extend(ta_tgt)
 
-    for idx, row in enumerate(zip(src, tgt)):
-      yield idx, {
-        'source': row[0],
-        'target': row[1]
-      }
+      temp = list(zip(src, tgt))
+      random.shuffle(temp)
+
+      src, tgt = zip(*temp)
+
+      for idx, row in enumerate(zip(src, tgt)):
+        yield idx, {
+          'source': row[0],
+          'target': row[1]
+        }
+
+    return (beam.Create([bn_src, bn_tgt, hi_src, hi_tgt, ta_src, ta_tgt]) | beam.Map(_process_file))
