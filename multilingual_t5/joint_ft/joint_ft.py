@@ -95,9 +95,9 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
       tgt = d['tgt']
 
       for idx, row in enumerate(zip(src, tgt)):
-        return idx, {
+        yield idx, {
           'source': row[0],
           'target': row[1]
         }
 
-    return (beam.Create([d]) | beam.Map(_process_file))
+    return (beam.Create([d]) | beam.FlatMap(_process_file))
