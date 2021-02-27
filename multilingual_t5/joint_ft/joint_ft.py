@@ -42,8 +42,8 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
   def _split_generators(self, dl_manager: tfds.download.DownloadManager):
     """Returns SplitGenerators."""
     # TODO(joint_ft): Downloads the data and defines the splits
-    bn = dl_manager.download_and_extract('https://anuvaad-parallel-corpus.s3-us-west-2.amazonaws.com/train-2021-v1-en-hi.zip')
-    hi = dl_manager.download_and_extract('https://anuvaad-parallel-corpus.s3-us-west-2.amazonaws.com/train-2021-v1-en-bn.zip')
+    bn = dl_manager.download_and_extract('https://anuvaad-parallel-corpus.s3-us-west-2.amazonaws.com/train-2021-v1-en-bn.zip')
+    hi = dl_manager.download_and_extract('https://anuvaad-parallel-corpus.s3-us-west-2.amazonaws.com/train-2021-v1-en-hi.zip')
     ta = dl_manager.download_and_extract('https://anuvaad-parallel-corpus.s3-us-west-2.amazonaws.com/train-2021-v1-en-ta.zip')
 
     devtest = dl_manager.download_and_extract('https://anuvaad-parallel-corpus.s3-us-west-2.amazonaws.com/devtest-2021-v1.zip')
