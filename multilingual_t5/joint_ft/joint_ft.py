@@ -89,7 +89,7 @@ class JointFt(tfds.core.GeneratorBasedBuilder):
     def _process_file(contents):
       src, tgt = contents[0], contents[1]
       for idx, row in enumerate(zip(src, tgt)):
-        yield idx, {
+        return idx, {
           'source': row[0],
           'target': row[1]
         }
